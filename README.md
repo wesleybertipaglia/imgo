@@ -40,7 +40,7 @@ Before you get started, make sure you have the following installed:
 To get started, clone the repository:
 
 ```bash
-git clone https://github.com/username/imgool.git
+git clone https://github.com/wesleybertipaglia/imgool.git
 ```
 
 #### 2. Install dependencies and build the project
