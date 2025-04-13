@@ -1,4 +1,4 @@
-module imgool
+module imgo
 
 go 1.24.2
 

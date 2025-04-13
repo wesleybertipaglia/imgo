@@ -1,4 +1,4 @@
-PROJECT_NAME = imgool
+PROJECT_NAME = imgo
 BIN_DIR = bin
 OUTPUT_DIR = output
 SRC_DIR = src

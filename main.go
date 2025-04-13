@@ -1,7 +1,7 @@
 package main
 
 import (
-	"imgool/cmd"
+	"imgo/cmd"
 )
 
 func main() {

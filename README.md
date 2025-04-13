@@ -1,6 +1,6 @@
-# imgool
+# imgo
 
-**imgool** is a simple, command-line image processing tool written in Go. It allows you to convert images between different formats (e.g., PNG, JPG, WebP) and compress images efficiently, all from the command line.
+**imgo** is a simple, command-line image processing tool written in Go. It allows you to convert images between different formats (e.g., PNG, JPG, WebP) and compress images efficiently, all from the command line.
 
 ## Table of Contents
 - [About](#about)
@@ -12,7 +12,7 @@
 
 ## About
 
-**imgool** is designed for developers and users who need to quickly convert or compress images directly from the command line. It’s simple, fast, and can be used in scripts or automation tools.
+**imgo** is designed for developers and users who need to quickly convert or compress images directly from the command line. It’s simple, fast, and can be used in scripts or automation tools.
 
 Currently, it supports:
 - Converting images between common formats (PNG, JPG, WebP, etc.)
@@ -40,7 +40,7 @@ Before you get started, make sure you have the following installed:
 To get started, clone the repository:
 
 ```bash
-git clone https://github.com/wesleybertipaglia/imgool.git
+git clone https://github.com/wesleybertipaglia/imgo.git
 ```
 
 #### 2. Install dependencies and build the project
@@ -48,7 +48,7 @@ git clone https://github.com/wesleybertipaglia/imgool.git
 Navigate to the project folder:
 
 ```bash
-cd imgool
+cd imgo
 ```
 
 To build the binary, you can use the Makefile. This will handle the building process for you:
@@ -57,30 +57,30 @@ To build the binary, you can use the Makefile. This will handle the building pro
 make build
 ```
 
-> This will create a binary file named imgool.
+> This will create a binary file named imgo.
 
 #### 3. Install globally (optional)
-To run imgool from anywhere, you can install it globally:
+To run imgo from anywhere, you can install it globally:
 
 ```bash
 make install
 ```
 
-> This will move the imgool binary to /usr/local/bin or another location in your system’s PATH.
+> This will move the imgo binary to /usr/local/bin or another location in your system’s PATH.
 
 ## Usage
-Once the binary is installed, you can use the imgool commands from any folder.
+Once the binary is installed, you can use the imgo commands from any folder.
 
 For example, to convert an image:
 
 ```bash
-imgool convert -i input.jpg -t png -o ./output
+imgo convert -i input.jpg -t png -o ./output
 ```
 
 To compress an image:
 
 ```bash
-imgool compress -i input.jpg -r 80
+imgo compress -i input.jpg -r 80
 ```
 
 ### Using the Makefile
