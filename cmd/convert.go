@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"imgo/cmd/utils"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -18,7 +20,7 @@ var convertCmd = &cobra.Command{
 		outputDir, _ := cmd.Flags().GetString("output")
 
 		if input == "" || outputType == "" {
-			fmt.Println("Please provide input file and output type.")
+			fmt.Println("Please provide both --input and --type options.")
 			return
 		}
 
@@ -32,24 +34,28 @@ var convertCmd = &cobra.Command{
 			return
 		}
 
-		baseName := strings.TrimSuffix(filepath.Base(input), filepath.Ext(input))
-		outputPath := filepath.Join(outputDir, baseName+"."+outputType)
-
-		switch strings.ToLower(outputType) {
-		case "jpg", "jpeg":
-			err = imaging.Save(img, outputPath, imaging.JPEGQuality(95))
-		case "png":
-			err = imaging.Save(img, outputPath)
-		default:
-			fmt.Println("Unsupported format:", outputType)
+		encoder, err := utils.GetEncoder(outputType)
+		if err != nil {
+			fmt.Println(err)
 			return
 		}
 
+		baseName := strings.TrimSuffix(filepath.Base(input), filepath.Ext(input))
+		outputPath := filepath.Join(outputDir, baseName+"_converted."+strings.ToLower(outputType))
+
+		f, err := os.Create(outputPath)
 		if err != nil {
-			fmt.Println("Failed to save image:", err)
-		} else {
-			fmt.Println("Image converted and saved to", outputPath)
+			fmt.Println("Failed to create output file:", err)
+			return
 		}
+		defer f.Close()
+
+		if err := encoder.Encode(f, img); err != nil {
+			fmt.Println("Failed to encode image:", err)
+			return
+		}
+
+		fmt.Println("Image converted and saved to", outputPath)
 	},
 }
 
