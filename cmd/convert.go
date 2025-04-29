@@ -18,6 +18,7 @@ var convertCmd = &cobra.Command{
 		input, _ := cmd.Flags().GetString("input")
 		outputType, _ := cmd.Flags().GetString("type")
 		outputDir, _ := cmd.Flags().GetString("output")
+		rate, _ := cmd.Flags().GetInt("rate")
 
 		if input == "" || outputType == "" {
 			fmt.Println("Please provide both --input and --type options.")
@@ -26,6 +27,10 @@ var convertCmd = &cobra.Command{
 
 		if outputDir == "" {
 			outputDir = "."
+		}
+
+		if rate <= 0 || rate > 100 {
+			rate = 80
 		}
 
 		img, err := imaging.Open(input)
@@ -50,7 +55,7 @@ var convertCmd = &cobra.Command{
 		}
 		defer f.Close()
 
-		if err := encoder.Encode(f, img); err != nil {
+		if err := encoder.Encode(f, img, rate); err != nil {
 			fmt.Println("Failed to encode image:", err)
 			return
 		}
@@ -63,4 +68,5 @@ func init() {
 	convertCmd.Flags().StringP("input", "i", "", "Input image path")
 	convertCmd.Flags().StringP("type", "t", "", "Output format (png, jpg, webp)")
 	convertCmd.Flags().StringP("output", "o", "", "Output directory (default: current)")
+	convertCmd.Flags().IntP("rate", "r", 80, "Compression rate (default: 80)")
 }

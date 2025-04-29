@@ -9,6 +9,9 @@ import (
 
 type WebpEncoder struct{}
 
-func (e WebpEncoder) Encode(w io.Writer, img image.Image) error {
-	return webp.Encode(w, img, &webp.Options{Lossless: false, Quality: 80})
+func (e WebpEncoder) Encode(w io.Writer, img image.Image, quality int) error {
+	return webp.Encode(w, img, &webp.Options{
+		Lossless: false,
+		Quality:  float32(quality),
+	})
 }

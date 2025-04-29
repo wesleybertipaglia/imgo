@@ -6,5 +6,5 @@ import (
 )
 
 type ImageEncoder interface {
-	Encode(w io.Writer, img image.Image) error
+	Encode(w io.Writer, img image.Image, quality int) error
 }

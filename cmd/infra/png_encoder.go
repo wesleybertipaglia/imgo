@@ -11,10 +11,9 @@ import (
 
 type PngEncoder struct{}
 
-func (e PngEncoder) Encode(w io.Writer, img image.Image) error {
+func (e PngEncoder) Encode(w io.Writer, img image.Image, quality int) error {
 	if file, ok := w.(*os.File); ok {
 		return imaging.Save(img, file.Name())
 	}
-
 	return errors.ErrUnsupported
 }

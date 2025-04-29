@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"imgo/cmd/utils"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -11,10 +13,11 @@ import (
 
 var compressCmd = &cobra.Command{
 	Use:   "compress",
-	Short: "Compress JPEG images",
+	Short: "Compress images to JPEG, PNG, or WebP",
 	Run: func(cmd *cobra.Command, args []string) {
 		input, _ := cmd.Flags().GetString("input")
 		rate, _ := cmd.Flags().GetInt("rate")
+		format, _ := cmd.Flags().GetString("format")
 
 		if input == "" {
 			fmt.Println("Please provide an input image.")
@@ -31,11 +34,29 @@ var compressCmd = &cobra.Command{
 			return
 		}
 
-		outputPath := strings.TrimSuffix(input, filepath.Ext(input)) + "_compressed.jpg"
+		if format == "" {
+			format = strings.TrimPrefix(filepath.Ext(input), ".")
+		}
 
-		err = imaging.Save(img, outputPath, imaging.JPEGQuality(rate))
+		encoder, err := utils.GetEncoder(strings.ToLower(format))
 		if err != nil {
-			fmt.Println("Failed to save compressed image:", err)
+			fmt.Println(err)
+			return
+		}
+
+		baseName := strings.TrimSuffix(filepath.Base(input), filepath.Ext(input))
+		outputPath := filepath.Join(filepath.Dir(input), baseName+"_compressed."+format)
+
+		f, err := os.Create(outputPath)
+		if err != nil {
+			fmt.Println("Failed to create output file:", err)
+			return
+		}
+		defer f.Close()
+
+		err = encoder.Encode(f, img, rate)
+		if err != nil {
+			fmt.Println("Failed to encode image:", err)
 		} else {
 			fmt.Println("Compressed image saved to", outputPath)
 		}
@@ -45,4 +66,5 @@ var compressCmd = &cobra.Command{
 func init() {
 	compressCmd.Flags().StringP("input", "i", "", "Input image path")
 	compressCmd.Flags().IntP("rate", "r", 80, "Compression rate (default: 80)")
+	compressCmd.Flags().StringP("format", "f", "", "Output format (default: input format)")
 }
