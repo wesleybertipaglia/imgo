@@ -22,8 +22,8 @@ Currently, it supports:
 
 - [x] Convert images between multiple formats (PNG, JPG, WebP, etc.)
 - [x] Compress images with customizable quality
+- [x] Batch processing by directory + image type
 - [ ] Support for more image formats (future plans)
-- [ ] Batch processing for multiple images (future plans)
 
 ## Get Started
 
@@ -71,16 +71,26 @@ make install
 ## Usage
 Once the binary is installed, you can use the imgo commands from any folder.
 
-For example, to convert an image:
+`-i` accepts a **single file** or a **directory**. For directories,
+also pass the image type (`--from` / `--to`).
+
+Single image (como antes):
 
 ```bash
-imgo convert -i input.jpg -t png -o ./output
+imgo convert -i input.jpg --to png -o ./output
+imgo compress -i input.jpg -r 80
 ```
 
-To compress an image:
+Whole folder (bulk):
 
 ```bash
-imgo compress -i input.jpg -r 80
+imgo convert -i ./images --from png --to webp
+imgo convert -i ./images --from jpg --to webp -o ./output -r 80
+# alias style: --ti instead of --from, -t instead of --to
+imgo convert -i ./images --ti png --to webp -o ./output
+
+imgo compress -i ./images --from jpg -r 80
+imgo compress -i ./images --from png -r 80 -o ./output
 ```
 
 ### Using the Makefile
